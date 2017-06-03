@@ -1,0 +1,25 @@
+{
+  "name": "node-djo",
+  "version": "1.0.0",
+  "description": "API for DJO",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vinylen2/node-djo.git"
+  },
+  "author": "Gabriel Wallén",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vinylen2/node-djo/issues"
+  },
+  "homepage": "https://github.com/vinylen2/node-djo#readme",
+  "dependencies": {
+    "koa": "^2.2.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.2.0",
+    "sequelize": "^3.30.4"
+  }
+}
