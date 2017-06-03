@@ -1,5 +1,5 @@
 "use strict";
-const router = require('koa-router')();
+const router = require('koa-router')({ prefix: "/api/v1"});
 
 const words = [
     {date: "2017-06-03", word: "fotboll"},
@@ -9,10 +9,12 @@ const words = [
 
 router.get('/', allWords);
 
-function *allWords(next) {
-    console.log("Nu kördes nåt");
-    this.body = words;
-    yield next;
+async function allWords(ctx, next) {
+    ctx.body = {
+        data: words,
+        message: "LOL"
+    };
+    await next;
 }
 
 module.exports = router;
