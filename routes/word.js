@@ -1,12 +1,15 @@
 "use strict";
 const router = require('koa-router')({ prefix: "/word"});
-const Words = require('../models/words.js');
 
-router.get('/:year/:month/:day', allWordsFromDay);
+const db = require('../db/db');
+console.log(db.Word);
 
-async function allWordsFromDay(ctx, next) {
+router.get('/:year/:month/:day', wordFromDay);
+
+async function wordFromDay(ctx, next) {
     const { year, month, day } = ctx.params;
-    const wordFromDay = await Words.allFromDay(year, month, day);
+    console.log(Word);
+    const wordFromDay = await Word.findById(year + "-" + month + "-" + day);
 
     ctx.body = {
         data: wordFromDay,
