@@ -1,57 +1,32 @@
 "use strict";
-const Sequelize = require('sequelize');
-const db = require ('../db/db.js');
+const path = require('path');
+const tableName = path.basename(__filename, '.js');
 
-const uComment = db.define('comment', {
-    date: {
-        type: Sequelize.DATEONLY
-    },
-    text: {
-        type: Sequelize.STRING
-    },
-    rank: {
-        type: Sequelize.INTEGER
-    },
-    region: {
-        type: Sequelize.STRING
-    },
-    ip: {
-        type: Sequelize.STRING
-    }
-}, {
-    getterMethods: {
-        findByRegion: function(region) {
-            return this.findAll({
-                where: {
-                    region: region
-                }
-            })
+module.exports = function(db, DataTypes) {
+    return db.define(tableName, {
+        date: {
+            type: DataTypes.DATEONLY
         },
-        findByIp: function(ip) {
-            return this.findAll({
-                where: {
-                    ip: ip
-                }
-            })
+        text: DataTypes.STRING,
+        rank: DataTypes.INTEGER,
+        region: DataTypes.STRING,
+        ip: DataTypes.STRING
+    }, {
+        classMethods: {
+            associate: function(models) {
+                this.belongsTo(models.Word);
+            },
+            getCommentsFromDate: function(date) {
+                console.log(date);
+                this.findAll({
+                    where: { date }
+                });
+            }
         }
-    }
-});
-
-module.exports = uComment;
-
-// const Comments = {
-//     allFromYear: function(year) {
-//         return Promise.resolve(comments.filter(comment => comment.date.format("YYYY") == year));
-//     },
-//     allFromMonth: function(year, month) {
-//         return Promise.resolve(comments.filter(comment => comment.date.format("YYYYM") == year + month));
-//     },
-//     allFromDay: function(year, month, day) {
-//         return Promise.resolve(comments.filter(comment => comment.date.format("YYYYMD") == year + month + day));
-//     },
-//     numberOfCommentsFromDay: function(year, month, day) {
-//         return Comments.allFromDay(year, month, day).then((result) => {
-//             return result.length;
-//         });
-//     }
-// };
+    }, {
+        instanceMethods: {
+            placeVote: function() {
+            }
+        }
+    });
+};

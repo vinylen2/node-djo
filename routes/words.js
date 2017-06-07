@@ -1,39 +1,29 @@
 "use strict";
 const router = require('koa-router')({ prefix: "/words"});
-const Words = require('../models/word.js');
+const moment = require('moment');
 
-router.get('/', allWords);
-router.get('/:year', allWordsFromYear);
-router.get('/:year/:month', allWordsFromMonth);
+const { Comment, Word } = require('../models');
 
-async function allWordsFromMonth(ctx, next) {
-    const { year, month } = ctx.params;
-    const wordsFromMonth = await Words.allFromMonth(year, month);
+router.get('/', tinyWordRequest);
+router.get('/week', allWordsFromWeek);
+
+async function tinyWordRequest(ctx, next) {
+    const tinyWordRequest = await Word.wordRequest(moment().format('YYYY-MM-DD'), 2);
 
     ctx.body = {
-        data: wordsFromMonth,
-        total: wordsFromMonth.length,
+        data: tinyWordRequest,
+        total: tinyWordRequest.length,
+        message: "here is the message"
+    };
+}
+
+async function allWordsFromWeek(ctx, next) {
+    const wordsFromWeek = await Word.wordRequest(moment().format('YYYY-MM-DD'), 8);
+
+    ctx.body = {
+        data: wordsFromWeek,
+        total: wordsFromWeek.length,
         message: "Here is the message"
-    };
-}
-
-async function allWordsFromYear(ctx, next) {
-    const wordsFromYear = await Words.allFromYear(ctx.params.year);
-
-    ctx.body = {
-        data: wordsFromYear,
-        total: wordsFromYear.length,
-        message: "Here is the message."
-    };
-}
-
-async function allWords(ctx, next) {
-    console.log("All words called");
-    const words = await Words.allWords();
-    ctx.body = {
-        data: words,
-        total: words.length,
-        message: "Here is the message."
     };
 }
 
