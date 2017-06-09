@@ -14,9 +14,6 @@ async function voteComment(ctx, next) {
             message: "The vote has been placed"
         };
     })
-
-
-
 }
 
 module.exports = router;
